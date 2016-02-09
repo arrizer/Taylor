@@ -29,6 +29,8 @@ public class Response {
         }
     }
     
+    public var userInfo = [String:Any]()
+    
     var bodyData: NSData {
         if let b = body {
             return b

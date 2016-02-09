@@ -35,6 +35,8 @@ public class Request {
     public var bodyString: String?
     public var body = [String:String]()
     
+    public var userInfo = [String:Any]()
+    
     internal var startTime = NSDate()
     var _protocol: String?
     
