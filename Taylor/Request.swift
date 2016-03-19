@@ -31,8 +31,14 @@ public class Request {
     public var method: Taylor.HTTPMethod = .UNDEFINED
     public var headers = [String:String]()
     
-    //var bodyData: NSData?
-    public var bodyString: String?
+    public var bodyData: NSMutableData?
+    public var bodyString: String? {
+        if let bodyData = bodyData {
+            return String(data: bodyData, encoding: NSUTF8StringEncoding)
+        } else {
+            return nil
+        }
+    }
     public var body = [String:String]()
     
     internal var startTime = NSDate()
@@ -128,13 +134,18 @@ public class Request {
                 }
             }
             
-            self.bodyString = str.isEmpty ? nil : str
+            if !str.isEmpty {
+                parseBodyData(str.dataUsingEncoding(NSUTF8StringEncoding))
+            }
         }
     }
     
-    func parseBodyData(d: NSData?){
-        if let data = d {
-            bodyString = String(data: data, encoding: NSUTF8StringEncoding)
+    func parseBodyData(data: NSData?){
+        if let data = data where method == .POST || method == .PUT {
+            if bodyData == nil {
+                bodyData = NSMutableData()
+            }
+            bodyData?.appendData(data)
         }
     }
 }
