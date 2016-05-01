@@ -84,7 +84,7 @@ private struct SwiftSocket: Socket, Hashable {
                 pendingRequest = request
                 if let contentLength = request.headers["Content-Length"],
                     let bodyLength = UInt(contentLength)
-                    where (request.method == .POST || request.method == .PUT) && bodyLength > 0 {
+                    where (request.supportsBodyData) && bodyLength > 0 {
                     // The request has a body
                     self.bodyLength = bodyLength
                     if let bodyData = request.bodyData where UInt(bodyData.length) >= bodyLength {

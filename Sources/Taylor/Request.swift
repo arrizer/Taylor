@@ -125,7 +125,7 @@ public class Request {
             }
         }
         
-        if i < http.count && supportsBodyData() { // Add other methods that support body data
+        if i < http.count && supportsBodyData { // Add other methods that support body data
             
             var str = ""
             i += 1
@@ -144,7 +144,7 @@ public class Request {
     
 
     func parseBodyData(data: NSData?){
-        if let data = data where supportsBodyData() {
+        if let data = data where supportsBodyData {
             if bodyData == nil {
                 bodyData = NSMutableData()
             }
@@ -152,17 +152,10 @@ public class Request {
         }
     }
 
-    private func supportsBodyData() -> Bool {
+    var supportsBodyData: Bool {
         switch self.method {
-        case Taylor.HTTPMethod.POST:
+        case .POST, .PUT, .PATCH:
             return true
-            
-        case Taylor.HTTPMethod.PUT:
-            return true
-            
-        case Taylor.HTTPMethod.PATCH:
-            return true
-            
         default:
             return false;
         }
