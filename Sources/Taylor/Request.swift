@@ -125,19 +125,11 @@ public class Request {
             }
         }
         
-        if i < http.count && supportsBodyData { // Add other methods that support body data
+        if i + 1 < http.count && supportsBodyData { // Add other methods that support body data
+            let bodyString = http[(i + 1)..<http.count].joinWithSeparator("\r\n")
             
-            var str = ""
-            i += 1
-            while i < http.count {
-                i += 1
-                if !http[i].isEmpty {
-                    str += "\(http[i])\n"
-                }
-            }
-            
-            if !str.isEmpty {
-                parseBodyData(str.dataUsingEncoding(NSUTF8StringEncoding))
+            if !bodyString.isEmpty {
+                parseBodyData(bodyString.dataUsingEncoding(NSUTF8StringEncoding))
             }
         }
     }
