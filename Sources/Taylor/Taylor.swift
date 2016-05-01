@@ -7,6 +7,13 @@
 //
 
 import Foundation
+#if os(Linux)
+    import Glibc
+let sysSleep = Glibc.sleep
+#else
+    import Darwin
+let sysSleep = Darwin.sleep
+#endif
 
 let CurrentSocket: Void -> SocketServer = {
     return SwiftSocketServer()
@@ -22,12 +29,13 @@ public typealias Handler = (Request, Response) -> Callback
 public enum HTTPMethod: String {
     
     case GET = "GET"
-    case POST = "POST"
     case PUT = "PUT"
     case HEAD = "HEAD"
+    case POST = "POST"
+    case PATCH = "PATCH"
+    case DELETE = "DELETE"
     case UNDEFINED = "UNDEFINED" // it will never match
 }
-
 public class Server {
     
     private var socket: SocketServer = CurrentSocket()
@@ -52,8 +60,7 @@ public class Server {
             
             // So the program doesn't end
             while true {
-                // need to get rid of this somehow...
-                NSRunLoop.mainRunLoop().run()
+               sysSleep(10)
             }
         }
     }

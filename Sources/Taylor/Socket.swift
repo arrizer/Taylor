@@ -29,6 +29,9 @@ protocol Socket {
 
 
 import SwiftSockets
+import Dispatch
+import Foundation
+
 
 private struct SwiftSocket: Socket, Hashable {
     
